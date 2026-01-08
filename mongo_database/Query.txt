@@ -1,0 +1,31 @@
+/*  tax_pal database */
+/*  can copy paste query line by line to create exact db at your end */
+
+
+1) 
+use taxpal_db
+
+2) 
+db.createCollection("users")
+
+3) /don't cpy paste this comment/ making email id unique
+
+db.users.createIndex({ email: 1 }, { unique: true })
+
+
+4) /don't cpy paste this comment / fields : id (pk) int , name varchar , email , password , country , income_bracket
+// sample data : _id (default pk, not null , unique)
+
+
+db.users.insertOne(
+{
+	name : "demoUser1",
+	email : "user1@gmail.com",
+	password : "demopassword",
+	country : "India",
+	income_bracket : ""
+
+}
+)
+
+ 

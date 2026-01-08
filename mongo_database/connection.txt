@@ -1,0 +1,13 @@
+// connect to mongo server first before running express (node server.js)
+
+1) create custom folder "mongofile" in c: drive and inside it create "Data" folder --> eg. -> C:\mongodbfilesnew\Data  
+
+2) open cmd -> go to -> C:\Program Files\MongoDB\Server\7.0\bin>
+
+3) then type - >> mongod --dbpath C:\mongodbfilesnew\Data
+
+4) open new cmd (without closing previous cmd) -> go to -> C:\Program Files\MongoDB\Server\7.0\bin>
+then 
+type ->>"mongosh"
+
+5) keep both cmd window open to keep db server running
