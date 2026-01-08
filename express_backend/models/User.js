@@ -1,5 +1,5 @@
 // models/User.js
-// defines schema for db collections
+// defines schema for db collections, with basic validations
 
 const { mongoose } = require("../utils/db")
 
