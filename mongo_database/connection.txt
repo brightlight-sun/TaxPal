@@ -1,5 +1,12 @@
-// connect to mongo server first before running express (node server.js)
+// to run mongodb in service mode , (if not already) run this in cmd, only once ever
+//preferred
+1) "C:\Program Files\MongoDB\Server\7.0\bin\mongod.exe" --install
+2) net start MongoDB
+-successfull message
 
+
+// connect to mongo server first before running express (node server.js)
+//do this only if using mannual mode for mongo db
 1) create custom folder "mongofile" in c: drive and inside it create "Data" folder --> eg. -> C:\mongodbfilesnew\Data  
 
 2) open cmd -> go to -> C:\Program Files\MongoDB\Server\7.0\bin>
@@ -11,3 +18,5 @@ then
 type ->>"mongosh"
 
 5) keep both cmd window open to keep db server running
+
+
