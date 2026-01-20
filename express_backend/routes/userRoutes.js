@@ -7,7 +7,9 @@ const verifyToken = require("../middlewares/authMiddleware")
 const { 
     getUsers, 
     registration, 
-    login 
+    login,
+    forgotPassword,
+    resetPassword, 
 
 } = require("../controllers/userController.js");
 
@@ -17,6 +19,12 @@ const {
 router.get("/",verifyToken, getUsers)
 router.post("/login", login)
 router.post("/register" , registration)
+
+
+// forgot password
+router.post("/forgot-password", forgotPassword)
+// router.post("/reset-password/:token", resetPassword)
+router.put("/reset-password/:token", resetPassword)
 
 
 module.exports = router

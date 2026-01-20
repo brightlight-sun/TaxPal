@@ -29,3 +29,4 @@ app.use('/api/users', userRoutes)
 app.listen(4000, 'localhost', () => {
     console.log('server started at port 4000')
 })
+
