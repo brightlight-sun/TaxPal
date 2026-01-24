@@ -1,23 +1,31 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/resetpassword.css";
 
 function ResetPassword() {
   const navigate = useNavigate();
+  const { state } = useLocation(); // ✅ email passed from VerifyOtp
+  const email = state?.email;
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    if (!email) {
+      setError("Session expired. Please start forgot password again.");
+      return;
+    }
 
     if (!password || !confirmPassword) {
       setError("All fields are required");
@@ -34,12 +42,36 @@ function ResetPassword() {
       return;
     }
 
-    setSuccess("Password reset successfully!");
+    try {
+      const res = await fetch(
+        "http://127.0.0.1:4000/api/users/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
-    // redirect to login
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Reset password failed");
+        return;
+      }
+
+      setSuccess("Password reset successfully!");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (err) {
+      setError("Server error. Please start backend.");
+    }
   };
 
   return (
@@ -74,12 +106,8 @@ function ResetPassword() {
               placeholder="New Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete="new-password"
             />
-            <span
-              className="eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
+            <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
@@ -89,17 +117,9 @@ function ResetPassword() {
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm New Password"
               value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }
-              autoComplete="new-password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <span
-              className="eye-icon"
-              onClick={() =>
-                setShowConfirmPassword(!showConfirmPassword)
-              }
-            >
+            <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>

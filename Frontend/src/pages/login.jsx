@@ -33,7 +33,7 @@ function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/users/login", {
+      const res = await fetch("http://127.0.0.1:4000/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,6 +45,16 @@ function Login() {
 
       if (!res.ok) {
         setError(data.message || "Invalid email or password");
+        return;
+      }
+
+      // If backend requires OTP (newly registered/unverified user)
+      if (data.requiresOtp) {
+        setSuccess(data.message || "OTP sent. Please verify.");
+        localStorage.setItem("pendingLoginEmail", email);
+        setTimeout(() => {
+          navigate("/verify-code", { state: { mode: "login", email } });
+        }, 300);
         return;
       }
 
